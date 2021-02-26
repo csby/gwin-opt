@@ -4,6 +4,11 @@
       <div>
         <i class="el-icon-setting" ></i>
         <span>后台服务</span>
+        <el-tooltip :content="info.downloadTitle" placement="top" v-show="info.downloadUrl.length > 0">
+          <a :href="info.downloadUrl" target="_blank" style="margin-top: 3px; color: #0078D7">
+            <i class="el-icon-download" />
+          </a>
+        </el-tooltip>
       </div>
       <div >
         <el-tooltip v-show="canUpdate" placement="top">
@@ -79,7 +84,9 @@ class Info extends VueBase {
     name: '',
     version: '',
     bootTime: '',
-    remark: ''
+    remark: '',
+    downloadTitle: '',
+    downloadUrl: ''
   }
 
   dlgVisible = false
@@ -130,6 +137,8 @@ class Info extends VueBase {
       this.info.bootTime = data.bootTime
       this.info.version = data.version
       this.info.remark = data.remark
+      this.info.downloadTitle = data.downloadTitle
+      this.info.downloadUrl = data.downloadUrl
     }
   }
 

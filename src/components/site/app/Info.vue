@@ -4,8 +4,8 @@
       <div>
         <i :class="icon" ></i>
         <span>{{info.name}}</span>
-        <el-tooltip content="从github下载" placement="top" v-show="info.guid === 'FDC3BDEFB79CEC8EB8211D2499E04704'">
-          <a href="https://github.com/csby/gwsf-doc/releases" target="_blank" style="margin-top: 3px; color: #0078D7">
+        <el-tooltip :content="info.downloadTitle" placement="top" v-show="info.downloadUrl.length > 0">
+          <a :href="info.downloadUrl" target="_blank" style="margin-top: 3px; color: #0078D7">
             <i class="el-icon-download" />
           </a>
         </el-tooltip>
@@ -105,7 +105,9 @@ class Info extends SocketBase {
     guid: '',
     root: '',
     version: '',
-    deployTime: ''
+    deployTime: '',
+    downloadTitle: '',
+    downloadUrl: ''
   }
 
   forms = [
@@ -127,6 +129,8 @@ class Info extends SocketBase {
       this.info.root = data.root
       this.info.version = data.version
       this.info.deployTime = data.deployTime === null ? '' : data.deployTime
+      this.info.downloadTitle = data.downloadTitle
+      this.info.downloadUrl = data.downloadUrl
     } else {
       this.info.url = ''
       this.info.name = ''
@@ -134,6 +138,8 @@ class Info extends SocketBase {
       this.info.root = ''
       this.info.version = ''
       this.info.deployTime = ''
+      this.info.downloadTitle = ''
+      this.info.downloadUrl = ''
     }
   }
 
