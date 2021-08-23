@@ -104,6 +104,10 @@ export default Interface
 </script>
 
 <style scoped>
+.el-card /deep/ .el-card__header {
+  background-color: #f8f8f8;
+  padding: 6px;
+}
 .header {
   display: flex;
   align-items: center;

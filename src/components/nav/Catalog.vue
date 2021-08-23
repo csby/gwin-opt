@@ -64,9 +64,9 @@ export default Catalog
   cursor: pointer;
 }
 
-.navigation .btn .menu {
+.navigation .menu {
 }
-.navigation .btn .menu:not(.el-menu--collapse) {
+.navigation .menu:not(.el-menu--collapse) {
   width: 200px;
 }
 
