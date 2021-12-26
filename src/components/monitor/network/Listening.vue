@@ -21,6 +21,7 @@
                :uri="this.$uris.monitorListenPorts"
                size="small"
                :border="false"
+               :max-height="360"
                @searched="onSearched">
       <template slot="columns">
         <el-table-column
@@ -63,7 +64,7 @@ import TableList from '@/components/TableList'
 })
 class Listening extends VueBase {
   bodyStyle = {
-    padding: '8px 20px'
+    padding: '0px'
   }
 
   itemCount = 0
@@ -88,6 +89,10 @@ export default Listening
 .el-card /deep/ .el-card__header {
   background-color: #f8f8f8;
   padding: 6px;
+}
+.el-card /deep/ .el-table--small td {
+  padding: 0;
+  margin: 0;
 }
 
 .header {

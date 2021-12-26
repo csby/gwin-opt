@@ -106,7 +106,7 @@ export default Interface
 <style scoped>
 .el-card /deep/ .el-card__header {
   background-color: #f8f8f8;
-  padding: 6px;
+  padding: 4px 6px;
 }
 .header {
   display: flex;

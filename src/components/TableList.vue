@@ -5,6 +5,7 @@
             :data="items"
             :border="border"
             :size="size"
+            :max-height="maxHeight"
             :stripe="true">
     <slot name="columns"></slot>
     <template slot="empty">
@@ -39,6 +40,10 @@ import VueBase from '@/components/VueBase'
     size: {
       type: String,
       default: ''
+    },
+    maxHeight: {
+      type: [String, Number],
+      default: '—'
     }
   }
 })
