@@ -1,4 +1,4 @@
-# gwsf-opt
+# gdhcp-opt
 
 ## Project setup
 ```

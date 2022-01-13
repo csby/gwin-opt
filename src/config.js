@@ -1,10 +1,10 @@
 const app = {
-  guid: '4D29EA5F748C4CFDA37434CE76A5E788',
-  title: '后台管理'
+  guid: '8C728D02D940976250BF18984C68DD2D',
+  title: 'DHCP后台管理'
 }
 
 const api = {
-  dev: 'http://192.168.123.201:8085',
+  dev: 'http://192.168.123.101:8085',
   pro: ''
 }
 

@@ -61,7 +61,17 @@ const uri = {
   // 获取网站信息
   siteWebAppInfo: '/opt.api/site/app/info',
   // 上传网站
-  siteWebAppUpload: '/opt.api/site/app/upload'
+  siteWebAppUpload: '/opt.api/site/app/upload',
+
+  // DHCP
+  // 获取筛选器列表
+  dhcpFilterList: '/app.api/dhcp/filter/list',
+  // 添加筛选器
+  dhcpFilterAdd: '/app.api/dhcp/filter/add',
+  // 删除筛选器
+  dhcpFilterDel: '/app.api/dhcp/filter/del',
+  // 修改筛选器
+  dhcpFilterMod: '/app.api/dhcp/filter/mod'
 }
 
 export default {

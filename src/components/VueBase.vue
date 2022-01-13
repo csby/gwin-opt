@@ -46,7 +46,7 @@ class VueBase extends Vue {
       if (this.isNotNullOrEmpty(err.detail)) {
         msg = msg + '<p>&nbsp;</p><p>' + err.detail + '</p>'
       }
-      this.message({
+      this.$msg({
         dangerouslyUseHTMLString: true,
         showClose: true,
         message: msg,

@@ -17,6 +17,16 @@
         <i class="el-icon-menu"></i>
         <span slot="title">控制面板</span>
       </el-menu-item>
+      <el-submenu index="/dhcp">
+        <template slot="title">
+          <i class="el-icon-crop"></i>
+          <span>DHCP</span>
+        </template>
+        <el-menu-item index="/dhcp/filter">
+          <i class="el-icon-aim"></i>
+          <span slot="title">筛选器</span>
+        </el-menu-item>
+      </el-submenu>
     </el-menu>
   </div>
 </template>

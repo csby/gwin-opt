@@ -43,6 +43,10 @@ const routes = [
       {
         path: '',
         component: Dashboard
+      },
+      {
+        path: '/dhcp/filter',
+        component: () => import('../views/authorized/dhcp/filter/Index')
       }
     ]
   },
