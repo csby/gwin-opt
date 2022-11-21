@@ -1,4 +1,4 @@
-# gdhcp-opt
+# gwin-opt
 
 ## Project setup
 ```

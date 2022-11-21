@@ -1,6 +1,6 @@
 const app = {
-  guid: '8C728D02D940976250BF18984C68DD2D',
-  title: 'DHCP后台管理'
+  guid: 'D0035AF786371FAB2554F7B650B32028',
+  title: 'Windows接口服务管理'
 }
 
 const api = {

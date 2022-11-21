@@ -1,12 +1,12 @@
 <template>
   <div>
-    <el-popover trigger="hover" placement="bottom-end">
+    <el-popover trigger="click" placement="bottom-end">
       <div >
         <div class="row">
           <span>登陆时间:&nbsp;</span>
           <span>{{loginTime}}</span>
         </div>
-        <hr>
+        <el-divider />
         <div class="row">
           <el-button type="text" icon="el-icon-log-out" @click="logout">退出登录</el-button>
         </div>
@@ -136,5 +136,7 @@ export default LoginUser
 </script>
 
 <style scoped>
-
+  .el-divider--horizontal {
+    margin: 10px 0;
+  }
 </style>

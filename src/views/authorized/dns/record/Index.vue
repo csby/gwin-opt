@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="header">
-      <i class="el-icon-aim"></i>
-      <span>筛选器</span>
+      <i class="el-icon-notebook-2"></i>
+      <span>解析记录【{{zoneName}}】</span>
       <el-badge class="badge" type="info" :value="itemCount" v-if="itemCount > 0"/>
       <div>
         <el-tooltip placement="left">
@@ -15,7 +15,7 @@
     </div>
     <div class="table">
       <el-table v-loading="info.loading"
-                element-loading-text="加载中..."
+                aelement-loading-text="加载中..."
                 element-loading-spinner="el-icon-loading"
                 size="small"
                 :max-height="heights.client - heights.top - heights.head"
@@ -26,19 +26,18 @@
             type="index"
             label="编号"
             width="60" align="right" />
-        <el-table-column label="MAC地址"
-                         prop="address"
-                         width="135px" />
-        <el-table-column label="描述"
-                         prop="comment"
+        <el-table-column label="主机记录"
+                         prop="name"
+                         :sortable="true" />
+        <el-table-column label="记录值"
+                         prop="data"
                          :sortable="true"/>
         <el-table-column width="105px">
           <template slot="header">
-            <el-button type="text" size="small" @click="showAdd">新建筛选器</el-button>
+            <el-button type="text" size="small" @click="showAdd">添加记录</el-button>
           </template>
           <template slot-scope="scope">
-            <el-button type="text" size="small" @click="showMod(scope.row)">修改</el-button>
-            <el-button type="text" size="small" @click="doDelete(scope.row.address)">删除</el-button>
+            <el-button type="text" size="small" @click="doDelete(scope.row)">删除</el-button>
           </template>
         </el-table-column>
         <template slot="empty">
@@ -61,15 +60,15 @@
                  :visible.sync="add.visible">
         <div slot="title" class="drawer-header">
           <i class="el-icon-circle-plus"></i>
-          <span>添加筛选器</span>
+          <span>添加记录</span>
           <div />
         </div>
         <el-form size="small">
-          <el-form-item label="MAC地址（格式: XX-XX-XX-XX-XX-XX）" :required="true">
-            <el-input v-model="add.args.address" @input="omAddInput" />
+          <el-form-item label="主机记录" :required="true">
+            <el-input v-model="add.args.name" @input="omAddInput" />
           </el-form-item>
-          <el-form-item label="描述（格式: 所属者-设备类型-备注）">
-            <el-input v-model="add.args.comment" :clearable="true" @input="omAddInput"/>
+          <el-form-item label="记录值（IP地址）" :required="true">
+            <el-input v-model="add.args.data" :clearable="true" @input="omAddInput"/>
           </el-form-item>
         </el-form>
         <div class="error" v-show="isNotNullOrEmpty(add.error.summary) || isNotNullOrEmpty(add.error.detail)">
@@ -79,39 +78,8 @@
         <div style="text-align: right;">
           <el-button type="primary"
                      :loading="add.committing"
-                     :disabled="isNullOrEmpty(add.args.address)"
+                     :disabled="isNullOrEmpty(add.args.name) && isNullOrEmpty(add.args.data)"
                      @click="doAdd">确 定</el-button>
-        </div>
-      </el-drawer>
-
-      <el-drawer class="drawer"
-                 direction="rtl"
-                 size="420px"
-                 :append-to-body="true"
-                 :destroy-on-close="true"
-                 :visible.sync="mod.visible">
-        <div slot="title" class="drawer-header">
-          <i class="el-icon-edit-outline"></i>
-          <span>修改筛选器</span>
-          <div />
-        </div>
-        <el-form size="small">
-          <el-form-item label="MAC地址（格式: XX-XX-XX-XX-XX-XX）" :required="true">
-            <el-input v-model="mod.args.filter.address" @input="omModInput" />
-          </el-form-item>
-          <el-form-item label="描述（格式: 所属者-设备类型-备注）">
-            <el-input v-model="mod.args.filter.comment" :clearable="true" @input="omModInput"/>
-          </el-form-item>
-        </el-form>
-        <div class="error" v-show="isNotNullOrEmpty(mod.error.summary) || isNotNullOrEmpty(mod.error.detail)">
-          <div class="summary">{{mod.error.summary}}</div>
-          <div class="detail">{{mod.error.detail}}</div>
-        </div>
-        <div style="text-align: right;">
-          <el-button type="primary"
-                     :loading="mod.committing"
-                     :disabled="isNullOrEmpty(mod.args.filter.address)"
-                     @click="doModify">确 定</el-button>
         </div>
       </el-drawer>
     </div>
@@ -122,8 +90,15 @@
 import Component from 'vue-class-component'
 import VueBase from '@/components/VueBase'
 
-@Component
+@Component({
+  watch: {
+    $route: {
+      handler: 'onRouteChanged'
+    }
+  }
+})
 class Index extends VueBase {
+  zoneName = ''
   heights = {
     client: (window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight) - 1,
     top: 30,
@@ -143,9 +118,9 @@ class Index extends VueBase {
     visible: false,
     committing: false,
     args: {
-      allow: true,
-      address: '',
-      comment: ''
+      zoneName: '',
+      name: '',
+      data: ''
     },
     error: {
       summary: '',
@@ -153,21 +128,28 @@ class Index extends VueBase {
     }
   }
 
-  mod = {
-    visible: false,
-    committing: false,
-    args: {
-      address: '',
-      filter: {
-        allow: true,
-        address: '',
-        comment: ''
-      }
-    },
-    error: {
-      summary: '',
-      detail: ''
+  onRouteChanged (val) {
+    if (!val) {
+      return
     }
+    const params = val.params
+    if (params) {
+      if (params.zoneName) {
+        this.zoneName = params.zoneName
+      }
+    }
+
+    this.add.args.zoneName = this.zoneName
+    this.doGetList()
+  }
+
+  onSizeChanged () {
+    const clientHeight = window.innerHeight ||
+        document.documentElement.clientHeight ||
+        document.body.clientHeight
+
+    const paddingHeight = 1
+    this.heights.client = clientHeight - paddingHeight
   }
 
   get itemCount () {
@@ -187,8 +169,8 @@ class Index extends VueBase {
   }
 
   showAdd () {
-    this.add.args.address = ''
-    this.add.args.comment = ''
+    this.add.args.name = ''
+    this.add.args.data = ''
     this.add.error.summary = ''
     this.add.error.detail = ''
     this.add.committing = false
@@ -222,52 +204,7 @@ class Index extends VueBase {
     this.add.committing = true
     this.add.error.summary = ''
     this.add.error.detail = ''
-    this.post(this.$uris.dhcpFilterAdd, argument, this.onAdd)
-  }
-
-  showMod (item) {
-    if (!item) {
-      return
-    }
-
-    this.mod.args.address = item.address
-    this.mod.args.filter.address = item.address
-    this.mod.args.filter.comment = item.comment
-    this.mod.error.summary = ''
-    this.mod.error.detail = ''
-    this.mod.committing = false
-    this.mod.visible = true
-  }
-
-  omModInput () {
-    this.mod.error.summary = ''
-    this.mod.error.detail = ''
-  }
-
-  onModify (code, err, data) {
-    this.mod.committing = false
-
-    if (code === 0) {
-      this.message('修改成功', 'success')
-      this.doGetList()
-      this.mod.visible = false
-    } else {
-      this.mod.error.summary = err.summary
-      this.mod.error.detail = err.detail
-    }
-  }
-
-  doModify () {
-    if (this.mod.committing) {
-      return
-    }
-
-    const argument = this.mod.args
-
-    this.mod.committing = true
-    this.mod.error.summary = ''
-    this.mod.error.detail = ''
-    this.post(this.$uris.dhcpFilterMod, argument, this.onModify)
+    this.post(this.$uris.dnsRecordAdd, argument, this.onAdd)
   }
 
   onDelete (code, err, data) {
@@ -279,11 +216,16 @@ class Index extends VueBase {
     }
   }
 
-  doDelete (address) {
-    const argument = {
-      address: address
+  doDelete (row) {
+    if (!row) {
+      return
     }
-    this.post(this.$uris.dhcpFilterDel, argument, this.onDelete)
+    const argument = {
+      zoneName: this.zoneName,
+      name: row.name,
+      data: row.data
+    }
+    this.post(this.$uris.dnsRecordDel, argument, this.onDelete)
   }
 
   onGetList (code, err, data) {
@@ -302,23 +244,19 @@ class Index extends VueBase {
       return
     }
 
+    const argument = {
+      zoneName: this.zoneName
+    }
+
     this.info.loading = true
     this.info.error.summary = ''
     this.info.error.detail = ''
-    this.post(this.$uris.dhcpFilterList, null, this.onGetList)
-  }
-
-  onSizeChanged () {
-    const clientHeight = window.innerHeight ||
-        document.documentElement.clientHeight ||
-        document.body.clientHeight
-
-    const paddingHeight = 1
-    this.heights.client = clientHeight - paddingHeight
+    this.post(this.$uris.dnsRecordList, argument, this.onGetList)
   }
 
   mounted () {
-    this.doGetList()
+    this.onRouteChanged(this.$route)
+
     window.addEventListener('resize', this.onSizeChanged)
     this.onSizeChanged()
   }

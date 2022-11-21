@@ -47,6 +47,18 @@ const routes = [
       {
         path: '/dhcp/filter',
         component: () => import('../views/authorized/dhcp/filter/Index')
+      },
+      {
+        path: '/dhcp/lease',
+        component: () => import('../views/authorized/dhcp/lease/Index')
+      },
+      {
+        path: '/dns/record/:zoneName',
+        component: () => import('../views/authorized/dns/record/Index')
+      },
+      {
+        path: '/svn/repository',
+        component: () => import('../views/authorized/svn/repository/Index')
       }
     ]
   },

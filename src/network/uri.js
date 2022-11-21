@@ -63,15 +63,48 @@ const uri = {
   // 上传网站
   siteWebAppUpload: '/opt.api/site/app/upload',
 
+  // 服务设置
+  // 获取接口配置
+  svcSettingApi: '/opt.api/setting/api',
+
   // DHCP
   // 获取筛选器列表
-  dhcpFilterList: '/app.api/dhcp/filter/list',
+  dhcpFilterList: '/api/dhcp/filter/list',
   // 添加筛选器
-  dhcpFilterAdd: '/app.api/dhcp/filter/add',
+  dhcpFilterAdd: '/api/dhcp/filter/add',
   // 删除筛选器
-  dhcpFilterDel: '/app.api/dhcp/filter/del',
+  dhcpFilterDel: '/api/dhcp/filter/del',
   // 修改筛选器
-  dhcpFilterMod: '/app.api/dhcp/filter/mod'
+  dhcpFilterMod: '/api/dhcp/filter/mod',
+  // 获取地址租用列表
+  dhcpLeaseList: '/api/dhcp/lease/list',
+
+  // DNS
+  // 解析A记录
+  // 获取记录列表
+  dnsRecordList: '/api/dns/record/list',
+  // 添加记录
+  dnsRecordAdd: '/api/dns/record/add',
+  // 删除记录
+  dnsRecordDel: '/api/dns/record/del',
+
+  // SVN
+  // 获取用户列表
+  svnUserAllList: '/api/svn/user/all/list',
+  // 新建存储库
+  svnRepositoryAdd: '/api/svn/repository/new',
+  // 获取存储库列表
+  svnRepositoryList: '/api/svn/repository/list',
+  // 获取文件夹列表
+  svnFolderList: '/api/svn/folder/list',
+  // 获取访问权限列表
+  svnPermissionList: '/api/svn/permission/list',
+  // 添加访问权限
+  svnPermissionAdd: '/api/svn/permission/add',
+  // 修改访问权限
+  svnPermissionMod: '/api/svn/permission/mod',
+  // 删除访问权限
+  svnPermissionDel: '/api/svn/permission/del'
 }
 
 export default {
